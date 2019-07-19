@@ -2,6 +2,10 @@
   "name": "node-db-challenge",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js",
+    "start": "node index.js"
+  },
   "repository": "https://github.com/DerekSchwantner/node-db-challenge.git",
   "author": "Derek S <dschwan21@me.com>",
   "license": "MIT",
