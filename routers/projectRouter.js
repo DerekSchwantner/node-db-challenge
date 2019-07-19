@@ -87,6 +87,24 @@ router.get("/:id/projActions", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deleteProject = await ProjectDb.remove(id);
+    console.log(deleteProject);
+
+    if (deleteProject > 0) {
+      res.status(200).json({ message: "The project has been deleted" });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Unable to delete the project with that id" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error trying to delete project" });
+  }
+});
+
 //Middleware
 function validateProjectInfo(req, res, next) {
   const projectInfo = req.body;

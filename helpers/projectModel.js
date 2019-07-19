@@ -5,7 +5,8 @@ module.exports = {
   addProject,
   getProjectById,
   getActionsByProjId,
-  getProjectWithActions
+  getProjectWithActions,
+  remove
 };
 
 function getProjects() {
@@ -30,19 +31,37 @@ async function addProject(projInfo) {
 
 // function getProjectWithActions(id) {
 //   return db("projects as p")
-//     .join("actions as a", "p.id", "a.project_id")
-//     .where("project_id", id)
-//     .select(
-//       "p.name",
-//       "p.description",
-//       "a.description",
-//       "a.notes",
-//       "a.completedANSWERS"
-//     );
+//     .select("*")
+//     .join("actions as a", "p.id", "a.project_id");
 // }
 
-function getProjectWithActions(id) {
-  return db("projects as p")
-    .join("actions as a", "p.id", "a.project_id")
-    .where({ id: id });
+async function getProjectWithActions(id) {
+  let project = await getProjectById(id);
+  let actions = await getActionsByProjId(id);
+  if (project) {
+    return { ...project, actions };
+  } else {
+    return null;
+  }
 }
+
+function remove(id) {
+  return db("projects")
+    .where("id", id)
+    .del();
+}
+
+// async function remove(id) {
+//   const doesIdExist = await getProjectById(id);
+//   return db("projects")
+//     .where({ id })
+//     .del()
+//     .then(deleted => {
+//       if (deleted) {
+//         return doesIdExist;
+//       } else {
+//         console.log("the id is NULL");
+//         return null;
+//       }
+//     });
+// }
